@@ -22,7 +22,9 @@ export function Nav({
     { href: "/purchasing", label: t("nav.purchasing") },
     { href: "/levels", label: t("nav.levels") },
     { href: "/classification", label: t("nav.classification") },
+    { href: "/masters", label: t("nav.masters") },
     { href: "/ingestion", label: t("nav.ingestion") },
+    { href: "/api-keys", label: t("nav.apikeys") },
     { href: "/settings", label: t("nav.settings") },
   ];
 

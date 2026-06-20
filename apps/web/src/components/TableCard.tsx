@@ -12,7 +12,7 @@ export function Th({
   children,
   align = "left",
 }: {
-  children: ReactNode;
+  children?: ReactNode;
   align?: "left" | "right";
 }) {
   return (
