@@ -75,6 +75,18 @@
       "high": "Alta"
     }
   },
+  "classification": {
+    "title": "Clasificacion",
+    "subtitle": "Clases ABC y el nivel de servicio aplicado a cada una",
+    "class": "Clase",
+    "products": "Productos",
+    "serviceLevel": "Nivel de servicio (%)",
+    "defaultHint": "Vacio = valor por defecto del tenant ({value}%)",
+    "save": "Guardar niveles de servicio",
+    "saved": "Guardado",
+    "error": "No se pudo guardar",
+    "empty": "Aun no hay esquemas de clasificacion. Ejecuta el motor para poblar ABC."
+  },
   "settings": {
     "title": "Configuracion",
     "subtitle": "Parametros del motor y de clasificacion para este tenant",

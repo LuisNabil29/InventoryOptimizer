@@ -75,6 +75,18 @@
       "high": "High"
     }
   },
+  "classification": {
+    "title": "Classification",
+    "subtitle": "ABC classes and the service level applied to each",
+    "class": "Class",
+    "products": "Products",
+    "serviceLevel": "Service level (%)",
+    "defaultHint": "Empty = tenant default ({value}%)",
+    "save": "Save service levels",
+    "saved": "Saved",
+    "error": "Could not save",
+    "empty": "No classification schemes yet. Run the engine to populate ABC."
+  },
   "settings": {
     "title": "Settings",
     "subtitle": "Engine and classification parameters for this tenant",
