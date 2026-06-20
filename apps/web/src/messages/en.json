@@ -1,0 +1,31 @@
+{
+  "app": {
+    "title": "Inventory Optimizer",
+    "subtitle": "Redistribution, purchasing and impact by service level"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "redistribution": "Redistribution",
+    "purchasing": "Purchasing",
+    "levels": "Levels",
+    "classification": "Classification",
+    "ingestion": "Ingestion",
+    "settings": "Settings"
+  },
+  "dashboard": {
+    "title": "Impact dashboard",
+    "recoveredMargin": "Margin to recover",
+    "recoveredRevenue": "Revenue to recover",
+    "releasedCapital": "Capital to release",
+    "lostSales": "Estimated lost sales",
+    "overstock": "Overstock",
+    "noRun": "No runs yet. Load data and run the engine."
+  },
+  "common": {
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "language": "Language"
+  }
+}

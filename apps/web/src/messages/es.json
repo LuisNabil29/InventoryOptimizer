@@ -1,0 +1,31 @@
+{
+  "app": {
+    "title": "Optimizador de Inventario",
+    "subtitle": "Redistribucion, compras e impacto por nivel de servicio"
+  },
+  "nav": {
+    "dashboard": "Tablero",
+    "redistribution": "Redistribucion",
+    "purchasing": "Compras",
+    "levels": "Niveles",
+    "classification": "Clasificacion",
+    "ingestion": "Ingesta",
+    "settings": "Configuracion"
+  },
+  "dashboard": {
+    "title": "Tablero de impacto",
+    "recoveredMargin": "Margen a recuperar",
+    "recoveredRevenue": "Ingreso a recuperar",
+    "releasedCapital": "Capital a liberar",
+    "lostSales": "Venta perdida estimada",
+    "overstock": "Sobreinventario",
+    "noRun": "Aun no hay corridas. Carga datos y ejecuta el motor."
+  },
+  "common": {
+    "theme": "Tema",
+    "light": "Claro",
+    "dark": "Oscuro",
+    "system": "Sistema",
+    "language": "Idioma"
+  }
+}

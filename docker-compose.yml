@@ -1,0 +1,48 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-app_password_change_me}
+      POSTGRES_DB: ${POSTGRES_DB:-inventory}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/ddl:/ddl:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-app} -d ${POSTGRES_DB:-inventory}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  engine:
+    build: ./services/engine
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      ENGINE_PORT: ${ENGINE_PORT:-8000}
+      ENGINE_INTERNAL_TOKEN: ${ENGINE_INTERNAL_TOKEN}
+    ports:
+      - "${ENGINE_PORT:-8000}:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  web:
+    build: ./apps/web
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+      NEXTAUTH_URL: ${NEXTAUTH_URL:-http://localhost:3000}
+      ENGINE_URL: ${ENGINE_URL:-http://engine:8000}
+      ENGINE_INTERNAL_TOKEN: ${ENGINE_INTERNAL_TOKEN}
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      engine:
+        condition: service_started
+
+volumes:
+  pgdata:

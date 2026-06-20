@@ -1,0 +1,393 @@
+// Esquema Prisma derivado de db/ddl/schema.sql.
+// El DDL (con RLS) es la fuente de verdad; este schema refleja el modelo para
+// acceso tipado desde Next.js. Generar con: npm run prisma:generate
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Tenant {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  slug      String   @unique
+  status    String   @default("active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@map("tenants")
+}
+
+model User {
+  id           String   @id @default(uuid()) @db.Uuid
+  email        String   @unique
+  name         String?
+  passwordHash String?  @map("password_hash")
+  locale       String   @default("es")
+  theme        String   @default("system")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Membership {
+  id        String   @id @default(uuid()) @db.Uuid
+  tenantId  String   @map("tenant_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  role      String   @default("member")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([tenantId, userId])
+  @@map("memberships")
+}
+
+model TenantSettings {
+  tenantId            String   @id @map("tenant_id") @db.Uuid
+  costOfCapitalPct    Decimal  @default("0.20") @map("cost_of_capital_pct") @db.Decimal(6, 4)
+  defaultServiceLevel Decimal  @default("0.95") @map("default_service_level") @db.Decimal(6, 4)
+  globalLeadTimeDays  Int      @default(7) @map("global_lead_time_days")
+  reviewPeriodDays    Int      @default(1) @map("review_period_days")
+  abcAPct             Decimal  @default("0.80") @map("abc_a_pct") @db.Decimal(6, 4)
+  abcBPct             Decimal  @default("0.15") @map("abc_b_pct") @db.Decimal(6, 4)
+  abcBasis            String   @default("margin") @map("abc_basis")
+  stockoutThreshold   Decimal  @default("0") @map("stockout_threshold") @db.Decimal(18, 4)
+  defaultLocale       String   @default("es") @map("default_locale")
+  defaultTheme        String   @default("system") @map("default_theme")
+  updatedAt           DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@map("tenant_settings")
+}
+
+model Location {
+  id        String   @id @default(uuid()) @db.Uuid
+  tenantId  String   @map("tenant_id") @db.Uuid
+  code      String
+  name      String
+  type      String
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@unique([tenantId, code])
+  @@map("locations")
+}
+
+model Supplier {
+  id                  String   @id @default(uuid()) @db.Uuid
+  tenantId            String   @map("tenant_id") @db.Uuid
+  code                String
+  name                String
+  minOrderValue       Decimal  @default("0") @map("min_order_value") @db.Decimal(18, 4)
+  defaultLeadTimeDays Int      @default(7) @map("default_lead_time_days")
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @default(now()) @updatedAt @map("updated_at")
+  products            Product[]
+
+  @@unique([tenantId, code])
+  @@map("suppliers")
+}
+
+model Product {
+  id                String    @id @default(uuid()) @db.Uuid
+  tenantId          String    @map("tenant_id") @db.Uuid
+  sku               String
+  name              String
+  unitCost          Decimal   @default("0") @map("unit_cost") @db.Decimal(18, 4)
+  unitPrice         Decimal   @default("0") @map("unit_price") @db.Decimal(18, 4)
+  packSize          Decimal   @default("1") @map("pack_size") @db.Decimal(18, 4)
+  primarySupplierId String?   @map("primary_supplier_id") @db.Uuid
+  primarySupplier   Supplier? @relation(fields: [primarySupplierId], references: [id])
+  isActive          Boolean   @default(true) @map("is_active")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  @@unique([tenantId, sku])
+  @@map("products")
+}
+
+model SupplierProduct {
+  id            String   @id @default(uuid()) @db.Uuid
+  tenantId      String   @map("tenant_id") @db.Uuid
+  supplierId    String   @map("supplier_id") @db.Uuid
+  productId     String   @map("product_id") @db.Uuid
+  leadTimeDays  Int?     @map("lead_time_days")
+  moq           Decimal  @default("0") @db.Decimal(18, 4)
+  orderMultiple Decimal  @default("1") @map("order_multiple") @db.Decimal(18, 4)
+  unitCost      Decimal? @map("unit_cost") @db.Decimal(18, 4)
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@unique([tenantId, supplierId, productId])
+  @@map("supplier_products")
+}
+
+model InventoryMovement {
+  id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @map("tenant_id") @db.Uuid
+  occurredOn  DateTime @map("occurred_on") @db.Date
+  locationId  String   @map("location_id") @db.Uuid
+  productId   String   @map("product_id") @db.Uuid
+  type        String
+  qty         Decimal  @db.Decimal(18, 4)
+  unitPrice   Decimal? @map("unit_price") @db.Decimal(18, 4)
+  unitCost    Decimal? @map("unit_cost") @db.Decimal(18, 4)
+  source      String   @default("csv")
+  externalId  String?  @map("external_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@unique([tenantId, externalId])
+  @@index([tenantId, productId, locationId, occurredOn])
+  @@index([tenantId, type, occurredOn])
+  @@map("inventory_movements")
+}
+
+model InventorySnapshot {
+  id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @map("tenant_id") @db.Uuid
+  snapshotOn  DateTime @map("snapshot_on") @db.Date
+  locationId  String   @map("location_id") @db.Uuid
+  productId   String   @map("product_id") @db.Uuid
+  qtyOnHand   Decimal  @default("0") @map("qty_on_hand") @db.Decimal(18, 4)
+  qtyOnOrder  Decimal  @default("0") @map("qty_on_order") @db.Decimal(18, 4)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@unique([tenantId, snapshotOn, locationId, productId])
+  @@index([tenantId, productId, locationId, snapshotOn])
+  @@map("inventory_snapshots")
+}
+
+model ClassificationScheme {
+  id        String   @id @default(uuid()) @db.Uuid
+  tenantId  String   @map("tenant_id") @db.Uuid
+  code      String
+  name      String
+  kind      String   @default("custom")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([tenantId, code])
+  @@map("classification_schemes")
+}
+
+model Classification {
+  id        String   @id @default(uuid()) @db.Uuid
+  tenantId  String   @map("tenant_id") @db.Uuid
+  schemeId  String   @map("scheme_id") @db.Uuid
+  code      String
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([tenantId, schemeId, code])
+  @@map("classifications")
+}
+
+model ProductClassification {
+  id               String   @id @default(uuid()) @db.Uuid
+  tenantId         String   @map("tenant_id") @db.Uuid
+  productId        String   @map("product_id") @db.Uuid
+  classificationId String   @map("classification_id") @db.Uuid
+  assignedBy       String   @default("system") @map("assigned_by")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@unique([tenantId, productId, classificationId])
+  @@map("product_classifications")
+}
+
+model ServiceLevelPolicy {
+  id               String   @id @default(uuid()) @db.Uuid
+  tenantId         String   @map("tenant_id") @db.Uuid
+  classificationId String?  @map("classification_id") @db.Uuid
+  productId        String?  @map("product_id") @db.Uuid
+  serviceLevel     Decimal  @map("service_level") @db.Decimal(6, 4)
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@map("service_level_policies")
+}
+
+model EngineRun {
+  id          String    @id @default(uuid()) @db.Uuid
+  tenantId    String    @map("tenant_id") @db.Uuid
+  runDate     DateTime  @map("run_date") @db.Date
+  trigger     String    @default("batch")
+  status      String    @default("running")
+  periodStart DateTime? @map("period_start") @db.Date
+  periodEnd   DateTime? @map("period_end") @db.Date
+  metrics     Json?
+  error       String?
+  startedAt   DateTime  @default(now()) @map("started_at")
+  finishedAt  DateTime? @map("finished_at")
+
+  @@unique([tenantId, runDate, trigger])
+  @@map("engine_runs")
+}
+
+model DemandStat {
+  id              String   @id @default(uuid()) @db.Uuid
+  tenantId        String   @map("tenant_id") @db.Uuid
+  runId           String   @map("run_id") @db.Uuid
+  productId       String   @map("product_id") @db.Uuid
+  locationId      String   @map("location_id") @db.Uuid
+  meanDaily       Decimal  @map("mean_daily") @db.Decimal(18, 6)
+  stdDaily        Decimal  @map("std_daily") @db.Decimal(18, 6)
+  adi             Decimal? @db.Decimal(18, 6)
+  cv2             Decimal? @db.Decimal(18, 6)
+  pattern         String?
+  dataPoints      Int      @default(0) @map("data_points")
+  confidence      String   @default("low")
+  fallbackToClass Boolean  @default(false) @map("fallback_to_class")
+
+  @@unique([runId, productId, locationId])
+  @@map("demand_stats")
+}
+
+model TargetLevel {
+  id               String  @id @default(uuid()) @db.Uuid
+  tenantId         String  @map("tenant_id") @db.Uuid
+  runId            String  @map("run_id") @db.Uuid
+  productId        String  @map("product_id") @db.Uuid
+  locationId       String  @map("location_id") @db.Uuid
+  serviceLevelUsed Decimal @map("service_level_used") @db.Decimal(6, 4)
+  leadTimeDays     Decimal @map("lead_time_days") @db.Decimal(10, 2)
+  safetyStock      Decimal @map("safety_stock") @db.Decimal(18, 4)
+  reorderPoint     Decimal @map("reorder_point") @db.Decimal(18, 4)
+  orderUpTo        Decimal @map("order_up_to") @db.Decimal(18, 4)
+  holdingCost      Decimal @map("holding_cost") @db.Decimal(18, 4)
+
+  @@unique([runId, productId, locationId])
+  @@map("target_levels")
+}
+
+model LostSalesEstimate {
+  id           String  @id @default(uuid()) @db.Uuid
+  tenantId     String  @map("tenant_id") @db.Uuid
+  runId        String  @map("run_id") @db.Uuid
+  productId    String  @map("product_id") @db.Uuid
+  locationId   String  @map("location_id") @db.Uuid
+  stockoutDays Int     @default(0) @map("stockout_days")
+  lostUnits    Decimal @default("0") @map("lost_units") @db.Decimal(18, 4)
+  lostRevenue  Decimal @default("0") @map("lost_revenue") @db.Decimal(18, 4)
+  lostMargin   Decimal @default("0") @map("lost_margin") @db.Decimal(18, 4)
+
+  @@unique([runId, productId, locationId])
+  @@map("lost_sales_estimates")
+}
+
+model RedistributionPlan {
+  id        String   @id @default(uuid()) @db.Uuid
+  tenantId  String   @map("tenant_id") @db.Uuid
+  runId     String   @map("run_id") @db.Uuid
+  status    String   @default("draft")
+  createdAt DateTime @default(now()) @map("created_at")
+  lines     RedistributionLine[]
+
+  @@map("redistribution_plans")
+}
+
+model RedistributionLine {
+  id                       String             @id @default(uuid()) @db.Uuid
+  tenantId                 String             @map("tenant_id") @db.Uuid
+  planId                   String             @map("plan_id") @db.Uuid
+  plan                     RedistributionPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  productId                String             @map("product_id") @db.Uuid
+  fromLocationId           String             @map("from_location_id") @db.Uuid
+  toLocationId             String             @map("to_location_id") @db.Uuid
+  qty                      Decimal            @db.Decimal(18, 4)
+  expectedMarginRecovered  Decimal            @default("0") @map("expected_margin_recovered") @db.Decimal(18, 4)
+  expectedRevenueRecovered Decimal            @default("0") @map("expected_revenue_recovered") @db.Decimal(18, 4)
+  status                   String             @default("draft")
+
+  @@map("redistribution_lines")
+}
+
+model PurchasePlan {
+  id        String          @id @default(uuid()) @db.Uuid
+  tenantId  String          @map("tenant_id") @db.Uuid
+  runId     String          @map("run_id") @db.Uuid
+  status    String          @default("draft")
+  createdAt DateTime        @default(now()) @map("created_at")
+  orders    PurchaseOrder[]
+
+  @@map("purchase_plans")
+}
+
+model PurchaseOrder {
+  id            String       @id @default(uuid()) @db.Uuid
+  tenantId      String       @map("tenant_id") @db.Uuid
+  planId        String       @map("plan_id") @db.Uuid
+  plan          PurchasePlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  supplierId    String       @map("supplier_id") @db.Uuid
+  totalValue    Decimal      @default("0") @map("total_value") @db.Decimal(18, 4)
+  meetsMinOrder Boolean      @default(true) @map("meets_min_order")
+  status        String       @default("draft")
+  createdAt     DateTime     @default(now()) @map("created_at")
+  lines         PoLine[]
+
+  @@map("purchase_orders")
+}
+
+model PoLine {
+  id             String        @id @default(uuid()) @db.Uuid
+  tenantId       String        @map("tenant_id") @db.Uuid
+  poId           String        @map("po_id") @db.Uuid
+  po             PurchaseOrder @relation(fields: [poId], references: [id], onDelete: Cascade)
+  productId      String        @map("product_id") @db.Uuid
+  locationId     String?       @map("location_id") @db.Uuid
+  netRequirement Decimal       @map("net_requirement") @db.Decimal(18, 4)
+  orderQty       Decimal       @map("order_qty") @db.Decimal(18, 4)
+  unitCost       Decimal       @map("unit_cost") @db.Decimal(18, 4)
+  lineValue      Decimal       @map("line_value") @db.Decimal(18, 4)
+  isFill         Boolean       @default(false) @map("is_fill")
+
+  @@map("po_lines")
+}
+
+model ImpactSimulation {
+  id               String   @id @default(uuid()) @db.Uuid
+  tenantId         String   @map("tenant_id") @db.Uuid
+  runId            String   @map("run_id") @db.Uuid
+  recoveredRevenue Decimal  @default("0") @map("recovered_revenue") @db.Decimal(18, 4)
+  recoveredMargin  Decimal  @default("0") @map("recovered_margin") @db.Decimal(18, 4)
+  releasedCapital  Decimal  @default("0") @map("released_capital") @db.Decimal(18, 4)
+  breakdown        Json?
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@map("impact_simulations")
+}
+
+model IngestionJob {
+  id             String    @id @default(uuid()) @db.Uuid
+  tenantId       String    @map("tenant_id") @db.Uuid
+  entity         String
+  source         String
+  status         String    @default("pending")
+  totalRows      Int       @default(0) @map("total_rows")
+  validRows      Int       @default(0) @map("valid_rows")
+  errorRows      Int       @default(0) @map("error_rows")
+  errors         Json?
+  idempotencyKey String?   @map("idempotency_key")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  finishedAt     DateTime? @map("finished_at")
+
+  @@unique([tenantId, idempotencyKey])
+  @@map("ingestion_jobs")
+}
+
+model ApiKey {
+  id         String    @id @default(uuid()) @db.Uuid
+  tenantId   String    @map("tenant_id") @db.Uuid
+  name       String
+  keyPrefix  String    @map("key_prefix")
+  keyHash    String    @map("key_hash")
+  scopes     String[]  @default(["ingest:write", "read"])
+  lastUsedAt DateTime? @map("last_used_at")
+  revokedAt  DateTime? @map("revoked_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+
+  @@unique([tenantId, keyPrefix])
+  @@map("api_keys")
+}
