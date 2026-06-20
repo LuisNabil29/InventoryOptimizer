@@ -75,6 +75,47 @@
       "high": "Alta"
     }
   },
+  "ingestion": {
+    "title": "Ingesta",
+    "subtitle": "Carga datos por CSV y ejecuta el optimizador",
+    "uploadTitle": "Cargar CSV",
+    "entity": "Entidad",
+    "file": "Archivo CSV",
+    "upload": "Cargar",
+    "runTitle": "Ejecutar motor",
+    "runHint": "Recalcula objetivos, redistribucion, compras e impacto con los datos mas recientes.",
+    "run": "Ejecutar ahora",
+    "result": "Procesadas {persisted} de {total} filas ({errors} con errores)",
+    "runDone": "Corrida {id} \u2192 {status}",
+    "sampleErrorsTitle": "Primeros errores",
+    "entities": {
+      "sales": "Ventas",
+      "inventory": "Snapshots de inventario",
+      "products": "Productos",
+      "suppliers": "Proveedores",
+      "supplier_products": "Proveedor-producto"
+    },
+    "errors": {
+      "badEntity": "Entidad invalida",
+      "noFile": "Elige un archivo CSV",
+      "noSession": "Sesion expirada",
+      "parse": "No se pudo leer el CSV",
+      "empty": "El archivo no tiene filas de datos",
+      "runFailed": "No se pudo iniciar la corrida"
+    },
+    "recentJobs": "Cargas recientes",
+    "recentRuns": "Corridas recientes",
+    "colEntity": "Entidad",
+    "colStatus": "Estado",
+    "colRows": "Filas ok/total",
+    "colWhen": "Cuando",
+    "colRun": "Fecha",
+    "colTransfers": "Traslados",
+    "colPOs": "OCs",
+    "colMargin": "Margen",
+    "noJobs": "Aun no hay cargas",
+    "noRuns": "Aun no hay corridas"
+  },
   "classification": {
     "title": "Clasificacion",
     "subtitle": "Clases ABC y el nivel de servicio aplicado a cada una",

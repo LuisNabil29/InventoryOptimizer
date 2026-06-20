@@ -75,6 +75,47 @@
       "high": "High"
     }
   },
+  "ingestion": {
+    "title": "Ingestion",
+    "subtitle": "Upload CSV data and run the optimizer",
+    "uploadTitle": "Upload CSV",
+    "entity": "Entity",
+    "file": "CSV file",
+    "upload": "Upload",
+    "runTitle": "Run engine",
+    "runHint": "Recompute targets, redistribution, purchasing and impact for the latest data.",
+    "run": "Run now",
+    "result": "Processed {persisted} of {total} rows ({errors} with errors)",
+    "runDone": "Run {id} \u2192 {status}",
+    "sampleErrorsTitle": "First errors",
+    "entities": {
+      "sales": "Sales",
+      "inventory": "Inventory snapshots",
+      "products": "Products",
+      "suppliers": "Suppliers",
+      "supplier_products": "Supplier-products"
+    },
+    "errors": {
+      "badEntity": "Invalid entity",
+      "noFile": "Choose a CSV file",
+      "noSession": "Session expired",
+      "parse": "Could not parse the CSV",
+      "empty": "The file has no data rows",
+      "runFailed": "Could not start the run"
+    },
+    "recentJobs": "Recent uploads",
+    "recentRuns": "Recent runs",
+    "colEntity": "Entity",
+    "colStatus": "Status",
+    "colRows": "Rows ok/total",
+    "colWhen": "When",
+    "colRun": "Date",
+    "colTransfers": "Transfers",
+    "colPOs": "POs",
+    "colMargin": "Margin",
+    "noJobs": "No uploads yet",
+    "noRuns": "No runs yet"
+  },
   "classification": {
     "title": "Classification",
     "subtitle": "ABC classes and the service level applied to each",
