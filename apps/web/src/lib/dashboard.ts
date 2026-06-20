@@ -1,4 +1,5 @@
 import { prisma, withTenant } from "./prisma";
+import { getCurrentTenantId } from "./tenant";
 
 export interface DashboardData {
   tenantName: string;
@@ -19,12 +20,13 @@ const EMPTY = {
   transfers: 0,
 };
 
-/**
- * Datos del tablero para el tenant actual. Sin auth de UI aun, se resuelve el
- * primer tenant (demo). TODO(auth): derivar el tenant de la sesion del usuario.
- */
+/** Datos del tablero para el tenant de la sesion actual. */
 export async function getDashboardData(): Promise<DashboardData | null> {
-  const tenant = await prisma.tenant.findFirst({ orderBy: { createdAt: "asc" } });
+  const tenantId = await getCurrentTenantId();
+  if (!tenantId) {
+    return null;
+  }
+  const tenant = await prisma.tenant.findUnique({ where: { id: tenantId } });
   if (!tenant) {
     return null;
   }

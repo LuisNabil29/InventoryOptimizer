@@ -4,7 +4,6 @@ import { getMessages, setRequestLocale, getTranslations } from "next-intl/server
 import { notFound } from "next/navigation";
 
 import "../globals.css";
-import { Nav } from "@/components/Nav";
 import { ThemeScript } from "@/components/ThemeScript";
 import { routing, type Locale } from "@/i18n/routing";
 
@@ -42,10 +41,7 @@ export default async function LocaleLayout({
         <ThemeScript />
       </head>
       <body className="min-h-screen">
-        <NextIntlClientProvider messages={messages}>
-          <Nav />
-          <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
-        </NextIntlClientProvider>
+        <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
       </body>
     </html>
   );

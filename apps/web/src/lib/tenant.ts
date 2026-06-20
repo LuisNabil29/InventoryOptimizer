@@ -1,10 +1,7 @@
-import { prisma } from "./prisma";
+import { getSession } from "./session";
 
-/**
- * Resuelve el tenant actual. Sin auth de UI aun, devuelve el primer tenant
- * (demo). TODO(auth): derivar el tenant de la sesion del usuario autenticado.
- */
+/** Tenant actual derivado de la sesion autenticada. */
 export async function getCurrentTenantId(): Promise<string | null> {
-  const tenant = await prisma.tenant.findFirst({ orderBy: { createdAt: "asc" } });
-  return tenant?.id ?? null;
+  const session = await getSession();
+  return session?.tenantId ?? null;
 }

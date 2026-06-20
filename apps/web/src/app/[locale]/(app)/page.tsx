@@ -1,17 +1,10 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { StatCard } from "@/components/StatCard";
+import { money } from "@/lib/format";
 import { getDashboardData } from "@/lib/dashboard";
 
 export const dynamic = "force-dynamic";
-
-function money(value: number) {
-  return new Intl.NumberFormat("es-MX", {
-    style: "currency",
-    currency: "MXN",
-    maximumFractionDigits: 0,
-  }).format(value);
-}
 
 export default async function DashboardPage({
   params,

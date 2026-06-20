@@ -75,6 +75,17 @@
       "high": "Alta"
     }
   },
+  "auth": {
+    "loginTitle": "Iniciar sesion",
+    "loginSubtitle": "Optimizador de Inventario",
+    "email": "Correo",
+    "password": "Contrasena",
+    "submit": "Entrar",
+    "invalid": "Correo o contrasena invalidos",
+    "missing": "Ingresa tu correo y contrasena",
+    "demoHint": "Demo: demo@example.com / demo1234",
+    "signOut": "Cerrar sesion"
+  },
   "common": {
     "theme": "Tema",
     "light": "Claro",

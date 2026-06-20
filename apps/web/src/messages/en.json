@@ -75,6 +75,17 @@
       "high": "High"
     }
   },
+  "auth": {
+    "loginTitle": "Sign in",
+    "loginSubtitle": "Inventory Optimizer",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Sign in",
+    "invalid": "Invalid email or password",
+    "missing": "Enter your email and password",
+    "demoHint": "Demo: demo@example.com / demo1234",
+    "signOut": "Sign out"
+  },
   "common": {
     "theme": "Theme",
     "light": "Light",

@@ -1,10 +1,19 @@
 import { useTranslations } from "next-intl";
 
 import { Link } from "@/i18n/navigation";
+import { logoutAction } from "@/lib/auth-actions";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { ThemeToggle } from "./ThemeToggle";
 
-export function Nav() {
+export function Nav({
+  locale,
+  email,
+  tenantName,
+}: {
+  locale: string;
+  email: string;
+  tenantName: string;
+}) {
   const t = useTranslations();
 
   const items = [
@@ -31,8 +40,23 @@ export function Nav() {
           </nav>
         </div>
         <div className="flex items-center gap-4">
+          {tenantName ? (
+            <span className="hidden text-sm text-slate-500 dark:text-slate-400 sm:inline">
+              {tenantName}
+            </span>
+          ) : null}
           <LocaleSwitcher />
           <ThemeToggle />
+          <form action={logoutAction}>
+            <input type="hidden" name="locale" value={locale} />
+            <button
+              type="submit"
+              title={email}
+              className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800"
+            >
+              {t("auth.signOut")}
+            </button>
+          </form>
         </div>
       </div>
     </header>
