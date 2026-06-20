@@ -33,11 +33,11 @@ CURRENT_ON_HAND = {
     ("ST-002", "SKU-1001"): 0,    # quiebre -> receptor + venta perdida
     ("ST-001", "SKU-1002"): 60,
     ("ST-002", "SKU-1002"): 45,
-    ("ST-001", "SKU-1003"): 140,  # donante
-    ("ST-002", "SKU-1003"): 8,    # receptor
+    ("ST-001", "SKU-1003"): 25,   # red de 1003 por debajo del objetivo -> compra
+    ("ST-002", "SKU-1003"): 5,    # receptor
     ("WH-001", "SKU-1001"): 50,
     ("WH-001", "SKU-1002"): 30,
-    ("WH-001", "SKU-1003"): 40,
+    ("WH-001", "SKU-1003"): 10,
 }
 
 STOCKOUT_LOC_SKU = ("ST-002", "SKU-1001")

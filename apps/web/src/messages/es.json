@@ -21,6 +21,60 @@
     "overstock": "Sobreinventario",
     "noRun": "Aun no hay corridas. Carga datos y ejecuta el motor."
   },
+  "redistribution": {
+    "title": "Plan de redistribucion",
+    "subtitle": "Traslados sugeridos priorizados por margen recuperado",
+    "sku": "SKU",
+    "from": "Origen",
+    "to": "Destino",
+    "qty": "Cant.",
+    "margin": "Margen recuperado",
+    "revenue": "Ingreso recuperado",
+    "summary": "{count} traslados · {margin} de margen recuperado",
+    "empty": "No hay traslados sugeridos en la ultima corrida."
+  },
+  "purchasing": {
+    "title": "Plan de compras",
+    "subtitle": "Ordenes de compra borrador agrupadas por proveedor",
+    "supplier": "Proveedor",
+    "orderTotal": "Total de la orden",
+    "sku": "SKU",
+    "qty": "Cant. a pedir",
+    "unitCost": "Costo unitario",
+    "lineValue": "Valor de linea",
+    "belowMin": "Debajo del minimo del proveedor",
+    "fill": "relleno",
+    "summary": "{orders} ordenes · {total} total",
+    "empty": "No hay ordenes de compra en la ultima corrida."
+  },
+  "levels": {
+    "title": "Niveles de inventario",
+    "subtitle": "Objetivos por nivel de servicio por SKU y ubicacion",
+    "sku": "SKU",
+    "location": "Ubicacion",
+    "serviceLevel": "Nivel de servicio",
+    "leadTime": "Lead time (d)",
+    "safetyStock": "Stock de seguridad",
+    "reorderPoint": "Punto de reorden",
+    "orderUpTo": "Nivel objetivo",
+    "holdingCost": "Costo de mantener",
+    "pattern": "Patron",
+    "confidence": "Confianza",
+    "summary": "{count} SKU-ubicaciones",
+    "empty": "No hay niveles objetivo en la ultima corrida.",
+    "patterns": {
+      "smooth": "Suave",
+      "erratic": "Erratico",
+      "intermittent": "Intermitente",
+      "lumpy": "Irregular",
+      "unknown": "—"
+    },
+    "confidenceLevels": {
+      "low": "Baja",
+      "medium": "Media",
+      "high": "Alta"
+    }
+  },
   "common": {
     "theme": "Tema",
     "light": "Claro",

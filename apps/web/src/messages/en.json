@@ -21,6 +21,60 @@
     "overstock": "Overstock",
     "noRun": "No runs yet. Load data and run the engine."
   },
+  "redistribution": {
+    "title": "Redistribution plan",
+    "subtitle": "Suggested transfers prioritized by margin recovered",
+    "sku": "SKU",
+    "from": "From",
+    "to": "To",
+    "qty": "Qty",
+    "margin": "Margin recovered",
+    "revenue": "Revenue recovered",
+    "summary": "{count} transfers · {margin} margin recovered",
+    "empty": "No transfers suggested in the latest run."
+  },
+  "purchasing": {
+    "title": "Purchase plan",
+    "subtitle": "Draft purchase orders grouped by supplier",
+    "supplier": "Supplier",
+    "orderTotal": "Order total",
+    "sku": "SKU",
+    "qty": "Order qty",
+    "unitCost": "Unit cost",
+    "lineValue": "Line value",
+    "belowMin": "Below supplier minimum",
+    "fill": "fill",
+    "summary": "{orders} orders · {total} total",
+    "empty": "No purchase orders in the latest run."
+  },
+  "levels": {
+    "title": "Inventory levels",
+    "subtitle": "Targets by service level per SKU and location",
+    "sku": "SKU",
+    "location": "Location",
+    "serviceLevel": "Service level",
+    "leadTime": "Lead time (d)",
+    "safetyStock": "Safety stock",
+    "reorderPoint": "Reorder point",
+    "orderUpTo": "Order-up-to",
+    "holdingCost": "Holding cost",
+    "pattern": "Pattern",
+    "confidence": "Confidence",
+    "summary": "{count} SKU-locations",
+    "empty": "No target levels in the latest run.",
+    "patterns": {
+      "smooth": "Smooth",
+      "erratic": "Erratic",
+      "intermittent": "Intermittent",
+      "lumpy": "Lumpy",
+      "unknown": "—"
+    },
+    "confidenceLevels": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    }
+  },
   "common": {
     "theme": "Theme",
     "light": "Light",
