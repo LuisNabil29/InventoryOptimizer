@@ -75,6 +75,30 @@
       "high": "Alta"
     }
   },
+  "settings": {
+    "title": "Configuracion",
+    "subtitle": "Parametros del motor y de clasificacion para este tenant",
+    "sections": {
+      "inventory": "Inventario y servicio",
+      "abc": "Clasificacion ABC",
+      "defaults": "Valores por defecto"
+    },
+    "costOfCapital": "Costo de capital (%/ano)",
+    "defaultServiceLevel": "Nivel de servicio por defecto (%)",
+    "globalLeadTime": "Lead time global (dias)",
+    "reviewPeriod": "Periodo de revision (dias)",
+    "abcA": "Umbral acumulado clase A (%)",
+    "abcB": "Umbral acumulado clase B (%)",
+    "abcBasis": "Base ABC",
+    "basis": { "margin": "Margen", "revenue": "Ingreso", "units": "Unidades" },
+    "stockoutThreshold": "Umbral de quiebre (unidades)",
+    "defaultLocale": "Idioma por defecto",
+    "defaultTheme": "Tema por defecto",
+    "themes": { "system": "Sistema", "light": "Claro", "dark": "Oscuro" },
+    "save": "Guardar cambios",
+    "saved": "Configuracion guardada",
+    "error": "No se pudo guardar la configuracion"
+  },
   "auth": {
     "loginTitle": "Iniciar sesion",
     "loginSubtitle": "Optimizador de Inventario",

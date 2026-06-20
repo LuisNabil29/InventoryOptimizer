@@ -75,6 +75,30 @@
       "high": "High"
     }
   },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Engine and classification parameters for this tenant",
+    "sections": {
+      "inventory": "Inventory & service",
+      "abc": "ABC classification",
+      "defaults": "Defaults"
+    },
+    "costOfCapital": "Cost of capital (%/yr)",
+    "defaultServiceLevel": "Default service level (%)",
+    "globalLeadTime": "Global lead time (days)",
+    "reviewPeriod": "Review period (days)",
+    "abcA": "Class A cumulative threshold (%)",
+    "abcB": "Class B cumulative threshold (%)",
+    "abcBasis": "ABC basis",
+    "basis": { "margin": "Margin", "revenue": "Revenue", "units": "Units" },
+    "stockoutThreshold": "Stockout threshold (units)",
+    "defaultLocale": "Default language",
+    "defaultTheme": "Default theme",
+    "themes": { "system": "System", "light": "Light", "dark": "Dark" },
+    "save": "Save changes",
+    "saved": "Settings saved",
+    "error": "Could not save settings"
+  },
   "auth": {
     "loginTitle": "Sign in",
     "loginSubtitle": "Inventory Optimizer",
